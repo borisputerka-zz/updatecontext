@@ -1,0 +1,44 @@
+project_name: updatecontext
+release:
+  github:
+    owner: borisputerka
+    name: updatecontext
+builds:
+  - id: updatecontext
+    goos:
+    - linux
+    - windows
+    - darwin
+    goarch:
+    - amd64
+    - "386"
+    env:
+      - CGO_ENABLED=0
+      - GO111MODULE=on
+    main: cmd/plugin/main.go
+    ldflags: -s -w
+      -X github.com/borisputerka/updatecontext/pkg/version.version={{.Version}}
+      -X github.com/borisputerka/updatecontext/pkg/version.gitSHA={{.Commit}}
+      -X github.com/borisputerka/updatecontext/pkg/version.buildTime={{.Date}}
+      -extldflags "-static"
+    flags: -tags netgo -installsuffix netgo
+    binary: updatecontext
+    hooks: {}
+archives:
+  - id: updatecontext
+    builds:
+      - updatecontext
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    name_template: "{{ .Binary }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - licence*
+      - LICENCE*
+      - license*
+      - LICENSE*
+      - readme*
+      - README*
+      - changelog*
+      - CHANGELOG*
