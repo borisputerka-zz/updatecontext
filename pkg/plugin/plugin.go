@@ -15,6 +15,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd/api"
 )
 
+// RuntPlugin function generated contexts
 func RunPlugin(configFlags *genericclioptions.ConfigFlags) error {
 	logger := logger.NewLogger()
 

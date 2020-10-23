@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-// Function that return 1 if you type y/Y/yes or 0 otherwise
+// AskForConfirmation function that return 1 if you type y/Y/yes or 0 otherwise
 func AskForConfirmation() (bool, error) {
 	reader := bufio.NewReader(os.Stdin)
 	response, err := reader.ReadString('\n')
@@ -20,3 +20,4 @@ func AskForConfirmation() (bool, error) {
 	}
 	return false, nil
 }
+
