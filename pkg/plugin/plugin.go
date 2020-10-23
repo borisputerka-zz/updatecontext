@@ -65,7 +65,14 @@ func RunPlugin(configFlags *genericclioptions.ConfigFlags) error {
 	}
 
 	if len(currentContexts) > 0 {
-		deleteContexts(configAccess, cmdConfig, currentContexts)
+		err := deleteContexts(configAccess, cmdConfig, currentContexts)
+		if err != nil {
+			return errors.Wrap(err, "could not delete contexts")
+		}
+	}
+
+	if len(createdContexts) == 0 {
+		logger.Info("Nothing to create \n")
 	}
 
 	return nil
@@ -78,10 +85,11 @@ func listContexts(cmdConfig *api.Config, cluster string) map[string]*api.Context
 			contexts[name] = ctx
 		}
 	}
+	
 	return contexts
 }
 
-func addContext(cmdConfig *api.Config, cluster string, namespace string) error {
+func addContext(cmdConfig *api.Config, cluster string, namespace string) {
 	newContext := *api.NewContext()
 	newContext.Cluster = cluster
 	newContext.Namespace = namespace
@@ -90,8 +98,6 @@ func addContext(cmdConfig *api.Config, cluster string, namespace string) error {
 	contextName := fmt.Sprintf("%s/%s", namespace, cluster)
 	cmdConfig.Contexts[contextName] = &newContext
 	cmdConfig.CurrentContext = contextName
-
-	return nil
 }
 
 func deleteContexts(configAccess *clientcmd.PathOptions, cmdConfig *api.Config, contexts map[string]*api.Context) error {
