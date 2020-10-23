@@ -23,17 +23,17 @@ func RootCmd() *cobra.Command {
 		Long:          `.`,
 		SilenceErrors: true,
 		SilenceUsage:  true,
-		PreRun: func(cmd *cobra.Command, args []string) {
-			err := viper.BindPFlags(cmd.Flags())
-			if err != nil {
-				fmt.Errorf("could bind flags %v", err)
-			}
-		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			log := logger.NewLogger()
 			log.Info("")
 
-			if err := plugin.RunPlugin(KubernetesConfigFlags); err != nil {
+			err := viper.BindPFlags(cmd.Flags())
+			if err != nil {
+				return errors.Cause(err)
+			}
+
+			err = plugin.RunPlugin(KubernetesConfigFlags)
+			if err != nil {
 				return errors.Cause(err)
 			}
 
