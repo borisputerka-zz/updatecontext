@@ -12,3 +12,7 @@ fmt:
 .PHONY: vet
 vet:
 	go vet ./pkg/... ./cmd/...
+
+.PHONY: lint
+lint:
+	@golangci-lint run ./...
