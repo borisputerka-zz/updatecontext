@@ -12,10 +12,10 @@ import (
 	"strings"
 )
 
-var (
-	KubernetesConfigFlags *genericclioptions.ConfigFlags
-)
+// KubernetesConfigFlags variable for generic config flags
+var KubernetesConfigFlags *genericclioptions.ConfigFlags
 
+// RootCmd function defines plugin function run
 func RootCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:           "updatecontext",
@@ -52,6 +52,7 @@ func RootCmd() *cobra.Command {
 	return cmd
 }
 
+// InitAndExecute function is called in main
 func InitAndExecute() {
 	if err := RootCmd().Execute(); err != nil {
 		fmt.Println(err)
