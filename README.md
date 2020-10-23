@@ -3,8 +3,10 @@
 [![GitHub Release](https://img.shields.io/github/release/borisputerka/updatecontext.svg?style=flat)](https://github.com/borisputerka/updatecontext/releases)
 [![Go Report Card](https://goreportcard.com/badge/github.com/borisputerka/updatecontext)](https://goreportcard.com/report/github.com/borisputerka/updatecontext)
 
-Plugin for kubectl that will create and update kubernetes contexts based on namespaces. For every namespace it will create context. After namespace is deleted, updatecontext will delete specific context. 
-You can then switch between contexts using [kubectx](https://github.com/ahmetb/kubectx) or using [fzf](https://github.com/junegunn/fzf) (see instruction below). Once you have contexts created, you will no longer need to use `kubectx` with `kubens` when accessing namespace in different cluster.
+[Kubectl](https://github.com/kubernetes/kubectl) plugin that manages kubernetes contexts. It will create context in `<namespace/<cluster>` format. Contexts for non-existent namespaces will be deleted (e.g., after you delete namespace with created context).
+
+
+To switch contexts you can use [kubectx](https://github.com/ahmetb/kubectx) or [fzf](https://github.com/junegunn/fzf) (see instructions below). Once you have contexts created you will no longer need to use `kubectx` with `kubens` when accessing namespace in different cluster.
 
 # Installation and usage
 
