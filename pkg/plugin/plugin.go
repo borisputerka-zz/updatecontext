@@ -64,15 +64,15 @@ func RunPlugin(configFlags *genericclioptions.ConfigFlags) error {
 		logger.Info(strings.Join(createdContexts, "\n"))
 	}
 
+	if len(createdContexts) == 0 {
+		logger.Info("Nothing to create \n")
+	}
+
 	if len(currentContexts) > 0 {
 		err := deleteContexts(configAccess, cmdConfig, currentContexts)
 		if err != nil {
 			return errors.Wrap(err, "could not delete contexts")
 		}
-	}
-
-	if len(createdContexts) == 0 {
-		logger.Info("Nothing to create \n")
 	}
 
 	return nil
@@ -102,13 +102,13 @@ func addContext(cmdConfig *api.Config, cluster string, namespace string) {
 
 func deleteContexts(configAccess *clientcmd.PathOptions, cmdConfig *api.Config, contexts map[string]*api.Context) error {
 	logger := logger.NewLogger()
-	contextsNames := ""
+	contextNames := ""
 	for name := range contexts {
-		contextsNames += name + "\n"
+		contextNames += name + "\n"
 	}
 
 	logger.Info("Following contexts are not used anymore:")
-	logger.Info(contextsNames)
+	logger.Info(contextNames)
 	logger.Info("Do you want to delete them? [Y/n]: ")
 	confirmed, err := utils.AskForConfirmation()
 	if err != nil {

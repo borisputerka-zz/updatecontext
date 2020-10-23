@@ -6,6 +6,7 @@ import (
 	"strings"
 )
 
+// Function that return 1 if you type y/Y/yes or 0 otherwise
 func AskForConfirmation() (bool, error) {
 	reader := bufio.NewReader(os.Stdin)
 	response, err := reader.ReadString('\n')
@@ -18,13 +19,4 @@ func AskForConfirmation() (bool, error) {
 		return true, nil
 	}
 	return false, nil
-}
-
-func StringInSlice(a string, list []string) bool {
-	for _, item := range list {
-		if item == a {
-			return true
-		}
-	}
-	return false
 }
