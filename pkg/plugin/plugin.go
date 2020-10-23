@@ -85,7 +85,7 @@ func listContexts(cmdConfig *api.Config, cluster string) map[string]*api.Context
 			contexts[name] = ctx
 		}
 	}
-	
+
 	return contexts
 }
 

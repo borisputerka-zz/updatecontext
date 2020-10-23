@@ -24,8 +24,9 @@ func RootCmd() *cobra.Command {
 		SilenceErrors: true,
 		SilenceUsage:  true,
 		PreRun: func(cmd *cobra.Command, args []string) {
-			if err := viper.BindPFlags(cmd.Flags()); err != nil {
-				fmt.Errorf("cannot bind flag set")
+			err := viper.BindPFlags(cmd.Flags())
+			if err != nil {
+				fmt.Errorf("could bind flags %v", err)
 			}
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
