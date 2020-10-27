@@ -9,53 +9,43 @@ import (
 
 	"github.com/pkg/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/cli-runtime/pkg/genericclioptions"
-	"k8s.io/client-go/kubernetes"
-	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/tools/clientcmd/api"
 )
 
-// RuntPlugin function generated contexts
-func RunPlugin(configFlags *genericclioptions.ConfigFlags) error {
+type ConfigFlags struct {
+	Config *utils.Config
+}
+
+func (o *ConfigFlags) Complete() (err error) {
+	o.Config, err = utils.NewConfig()
+	if err != nil {
+		return fmt.Errorf("failed to get config: %v", err)
+	}
+	return nil
+}
+
+// RunPlugin function generated contexts
+func (o *ConfigFlags) RunPlugin() error {
 	logger := logger.NewLogger()
 
-	configAccess := clientcmd.NewDefaultPathOptions()
-
-	cmdConfig, err := configAccess.GetStartingConfig()
-	if err != nil {
-		return errors.Wrap(err, "failed to get cmdConfig")
-	}
-
-	config, err := configFlags.ToRESTConfig()
-	if err != nil {
-		return errors.Wrap(err, "failed to read kubeconfig")
-	}
-
-	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		return errors.Wrap(err, "failed to create clientset")
-	}
-
-	namespaces, err := clientset.CoreV1().Namespaces().List(metav1.ListOptions{})
+	namespaces, err := o.listNamespaces()
 	if err != nil {
 		return errors.Wrap(err, "failed to list namespaces")
 	}
 
-	currContext := cmdConfig.Contexts[cmdConfig.CurrentContext]
-	cluster := currContext.Cluster
-	currentContexts := listContexts(cmdConfig, cluster)
+	currentContexts, cluster := o.Config.ListContexts()
 
 	var createdContexts []string
-	for _, namespace := range namespaces.Items {
-		contextName := fmt.Sprintf("%s/%s", namespace.Name, cluster)
+	for _, namespace := range namespaces {
+		contextName := fmt.Sprintf("%s/%s", namespace, cluster)
 		if _, ok := currentContexts[contextName]; !ok {
-			addContext(cmdConfig, cluster, namespace.Name)
+			o.Config.AddContext(cluster, namespace)
 			createdContexts = append(createdContexts, contextName)
 		}
 		delete(currentContexts, contextName) // Non-existent context will be  in allContexts after all iterations
 	}
 
-	err = clientcmd.ModifyConfig(configAccess, *cmdConfig, true)
+	err = o.Config.Update()
 	if err != nil {
 		return errors.Wrap(err, "failed to modify configAccess")
 	}
@@ -70,7 +60,7 @@ func RunPlugin(configFlags *genericclioptions.ConfigFlags) error {
 	}
 
 	if len(currentContexts) > 0 {
-		err := deleteContexts(configAccess, cmdConfig, currentContexts)
+		err := o.deleteContexts(currentContexts)
 		if err != nil {
 			return errors.Wrap(err, "could not delete contexts")
 		}
@@ -79,29 +69,26 @@ func RunPlugin(configFlags *genericclioptions.ConfigFlags) error {
 	return nil
 }
 
-func listContexts(cmdConfig *api.Config, cluster string) map[string]*api.Context {
-	contexts := map[string]*api.Context{}
-	for name, ctx := range cmdConfig.Contexts {
-		if ctx.Cluster == cluster {
-			contexts[name] = ctx
-		}
+func (o *ConfigFlags) listNamespaces() ([]string, error) {
+	client, err := o.Config.GetKubernetesClient()
+	if err != nil {
+		return nil, fmt.Errorf("could get kubernetes client: %v", err)
 	}
 
-	return contexts
+	namespaces, err := client.CoreV1().Namespaces().List(metav1.ListOptions{})
+	if err != nil {
+		return nil, fmt.Errorf("could not get list of namespaces: %v", err)
+	}
+
+	var namespaceList []string
+	for _, ns := range namespaces.Items {
+		namespaceList = append(namespaceList, ns.Name)
+	}
+
+	return namespaceList, nil
 }
 
-func addContext(cmdConfig *api.Config, cluster string, namespace string) {
-	newContext := *api.NewContext()
-	newContext.Cluster = cluster
-	newContext.Namespace = namespace
-	newContext.AuthInfo = cluster
-
-	contextName := fmt.Sprintf("%s/%s", namespace, cluster)
-	cmdConfig.Contexts[contextName] = &newContext
-	cmdConfig.CurrentContext = contextName
-}
-
-func deleteContexts(configAccess *clientcmd.PathOptions, cmdConfig *api.Config, contexts map[string]*api.Context) error {
+func (o *ConfigFlags) deleteContexts(contexts map[string]*api.Context) error {
 	logger := logger.NewLogger()
 	contextNames := ""
 	for name := range contexts {
@@ -117,15 +104,10 @@ func deleteContexts(configAccess *clientcmd.PathOptions, cmdConfig *api.Config, 
 	}
 
 	if confirmed {
-		for name := range contexts {
-			delete(cmdConfig.Contexts, name)
-		}
-
-		err = clientcmd.ModifyConfig(configAccess, *cmdConfig, true)
+		err := o.Config.DeleteContexts(contexts)
 		if err != nil {
 			return err
 		}
-
 		logger.Info("Contexts deleted successfully")
 	}
 	return nil

@@ -7,16 +7,13 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"k8s.io/cli-runtime/pkg/genericclioptions"
 	"os"
 	"strings"
 )
 
-// KubernetesConfigFlags variable for generic config flags
-var KubernetesConfigFlags *genericclioptions.ConfigFlags
-
 // RootCmd function defines plugin function run
 func RootCmd() *cobra.Command {
+	o := &plugin.ConfigFlags{}
 	cmd := &cobra.Command{
 		Use:           "updatecontext",
 		Short:         "",
@@ -32,7 +29,12 @@ func RootCmd() *cobra.Command {
 				return errors.Cause(err)
 			}
 
-			err = plugin.RunPlugin(KubernetesConfigFlags)
+			err = o.Complete()
+			if err != nil {
+				return errors.Cause(err)
+			}
+
+			err = o.RunPlugin()
 			if err != nil {
 				return errors.Cause(err)
 			}
@@ -44,9 +46,6 @@ func RootCmd() *cobra.Command {
 	}
 
 	cobra.OnInitialize(initConfig)
-
-	KubernetesConfigFlags = genericclioptions.NewConfigFlags(false)
-	KubernetesConfigFlags.AddFlags(cmd.Flags())
 
 	viper.SetEnvKeyReplacer(strings.NewReplacer("-", "_"))
 	return cmd
