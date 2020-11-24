@@ -81,8 +81,11 @@ func (o *ConfigFlags) listNamespaces() ([]string, error) {
 	}
 
 	var namespaceList []string
+	excludedNsList := []string{"kube-public", "kube-node-lease"}
 	for _, ns := range namespaces.Items {
-		namespaceList = append(namespaceList, ns.Name)
+		if !utils.StringInSlice(ns.Name, excludedNsList) {
+			namespaceList = append(namespaceList, ns.Name)
+		}
 	}
 
 	return namespaceList, nil

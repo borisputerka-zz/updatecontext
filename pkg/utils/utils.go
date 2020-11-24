@@ -2,8 +2,6 @@ package utils
 
 import (
 	"bufio"
-	restclient "k8s.io/client-go/rest"
-	"k8s.io/client-go/tools/clientcmd"
 	"os"
 	"strings"
 )
@@ -23,19 +21,12 @@ func AskForConfirmation() (bool, error) {
 	return false, nil
 }
 
-func GetKubernetesConfig(local bool, masterURL string) (config *restclient.Config, err error) {
-	if local {
-		configAccess := clientcmd.NewDefaultPathOptions()
-		config, err = clientcmd.BuildConfigFromKubeconfigGetter(masterURL, configAccess.GetStartingConfig)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		// creates the in-cluster config
-		config, err = restclient.InClusterConfig()
-		if err != nil {
-			return nil, err
+// StringInSlice return true when string is in slice
+func StringInSlice(a string, list []string) bool {
+	for _, item := range list {
+		if item == a {
+			return true
 		}
 	}
-	return config, nil
+	return false
 }
