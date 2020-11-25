@@ -3,14 +3,14 @@ kind: Plugin
 metadata:
   name: updatecontext
 spec:
-  version: "v0.1.0"
+  version: "v0.1.1"
   platforms:
   - selector:
       matchLabels:
         os: linux
         arch: amd64
-    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.0/updatecontext_linux_amd64.tar.gz
-    sha256: "d1fd6d0cabc16780bdcc52a2310aeed73f3ec3830432f515ca9e8b4d5d3ec122"
+    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.1/updatecontext_linux_amd64.tar.gz
+    sha256: "1b8f073abc844b258a01780fc5dab15ef01cbdc06cea7e9a1bdd14f49927cbc3"
     files:
     - from: "updatecontext"
       to: "."
@@ -21,8 +21,8 @@ spec:
       matchLabels:
         os: darwin
         arch: amd64
-    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.0/updatecontext_darwin_amd64.tar.gz
-    sha256: "905d9ac3f930b4458c7cb8392cb1a2bcc145d292aab55f21f489f27be454c320"
+    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.1/updatecontext_darwin_amd64.tar.gz
+    sha256: "f366edbac6b02d02140ffc1ecbd2f2e33aed5e65b0250f1cab777ed9fcb856ff"
     files:
     - from: "updatecontext"
       to: "."
@@ -33,8 +33,8 @@ spec:
       matchLabels:
         os: windows
         arch: amd64
-    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.0/updatecontext_windows_amd64.zip
-    sha256: "83f74d9282bf58e76d1367bfc27f3b817e65c5f68ec6cd9d218baae3537266e1"
+    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.1/updatecontext_windows_amd64.zip
+    sha256: "0bd049c9030219225f3d053c694b454628843f31bd25542054845d5f1a58a3ff"
     files:
     - from: "updatecontext.exe"
       to: "."
@@ -49,7 +49,6 @@ spec:
 
     For additional options:
       $ kubectl updatecontext --help
-      or https://github.com/borisputerka/updatecontext/blob/v0.1.0/doc/USAGE.md
 
   description: |
-    This is a new plugin
+    This is a new plugin for creating contexts in kubeconfig
