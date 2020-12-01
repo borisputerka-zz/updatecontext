@@ -10,7 +10,7 @@ To switch contexts you can use [kubectx](https://github.com/ahmetb/kubectx) or [
 
 # Installation and usage
 
-> **Info**: This plugin is not yet in [krew-index](https://github.com/kubernetes-sigs/krew-index) repository. Please use installation as described below
+> **Info**: This plugin is not in [krew-index](https://github.com/kubernetes-sigs/krew-index) but for convenience I added krew manifest as installlation option..
 
 1. Install plugin
     * using krew manifest in this repository
