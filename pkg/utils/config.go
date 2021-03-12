@@ -2,6 +2,7 @@ package utils
 
 import (
 	"fmt"
+	"strings"
 	"k8s.io/cli-runtime/pkg/genericclioptions"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/rest"
@@ -28,6 +29,8 @@ func (c *Config) Update() (err error) {
 }
 
 func (c *Config) ContextName(cluster string, namespace string) string {
+	clusterParts := strings.Split(cluster, "/")
+	cluster = clusterParts[len(clusterParts)-1]
 	return fmt.Sprintf("%s/%s", namespace, cluster)
 }
 
