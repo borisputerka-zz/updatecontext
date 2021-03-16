@@ -37,7 +37,7 @@ func (o *ConfigFlags) RunPlugin() error {
 
 	var createdContexts []string
 	for _, namespace := range namespaces {
-		contextName := fmt.Sprintf("%s/%s", namespace, cluster)
+		contextName := o.Config.ContextName(cluster, namespace)
 		if _, ok := currentContexts[contextName]; !ok {
 			o.Config.AddContext(cluster, namespace)
 			createdContexts = append(createdContexts, contextName)
