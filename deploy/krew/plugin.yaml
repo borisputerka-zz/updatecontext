@@ -3,14 +3,14 @@ kind: Plugin
 metadata:
   name: updatecontext
 spec:
-  version: "v0.1.2"
+  version: "v0.1.3"
   platforms:
   - selector:
       matchLabels:
         os: linux
         arch: amd64
-    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.2/updatecontext_linux_amd64.tar.gz
-    sha256: "3302195a0b801825103c519c7618d821969d4438362f7d38b7b5768c5ee90428"
+    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.3/updatecontext_linux_amd64.tar.gz
+    sha256: "59566db9cbfd1bf28e3c9fb8c10072b52858d7a867c4e24f688a7d4a2c827443"
     files:
     - from: "updatecontext"
       to: "."
@@ -21,8 +21,8 @@ spec:
       matchLabels:
         os: darwin
         arch: amd64
-    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.2/updatecontext_darwin_amd64.tar.gz
-    sha256: "196b065591137db479facfdffcb32ef9b475e04107222bb98124994057059e52"
+    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.3/updatecontext_darwin_amd64.tar.gz
+    sha256: "6cba495d052e822f329d5c4a89718297f9a688a836855351c0d2b1a096fd74da"
     files:
     - from: "updatecontext"
       to: "."
@@ -33,8 +33,8 @@ spec:
       matchLabels:
         os: windows
         arch: amd64
-    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.2/updatecontext_windows_amd64.zip
-    sha256: "7900b045ed2f3ac59f48904e1e32941c5bb9a51d09b377014fc3c1e39564574d"
+    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.3/updatecontext_windows_amd64.zip
+    sha256: "7c96b3883fc6f6a28e290f7436deb130692d47baac7f7e1827b082dfc6d28bfd"
     files:
     - from: "updatecontext.exe"
       to: "."
