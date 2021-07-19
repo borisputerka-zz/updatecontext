@@ -3,14 +3,14 @@ kind: Plugin
 metadata:
   name: updatecontext
 spec:
-  version: "v0.1.4"
+  version: "v0.1.5"
   platforms:
   - selector:
       matchLabels:
         os: linux
         arch: amd64
-    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.4/updatecontext_linux_amd64.tar.gz
-    sha256: "ba4ef1a454d1444a7461da33faca605b633a001a25ad22d5213b3dbe99c868a6"
+    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.5/updatecontext_linux_amd64.tar.gz
+    sha256: "7c16470983f0c575a9fd5f2dc70f02bdc40f2192b208fb4dca851bf6090550de"
     files:
     - from: "updatecontext"
       to: "."
@@ -21,8 +21,20 @@ spec:
       matchLabels:
         os: darwin
         arch: amd64
-    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.4/updatecontext_darwin_amd64.tar.gz
-    sha256: "08e5a72a413ad46f66ffef84dd590dc9fd6e7f5b9cb20ccfbfd541ccacdd0757"
+    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.5/updatecontext_darwin_amd64.tar.gz
+    sha256: "40e2c6b7143d71917f1c06f0725b0dbb89c0819e7d631a26946112f3179738aa"
+    files:
+    - from: "updatecontext"
+      to: "."
+    - from: LICENSE
+      to: "."
+    bin: "updatecontext"
+  - selector:
+      matchLabels:
+        os: darwin
+        arch: arm64
+    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.5/updatecontext_darwin_arm64.tar.gz
+    sha256: "599cf05727194c6c3a1660ce3606a31bcbad464130f45662f2cbc6dfe345a0fe"
     files:
     - from: "updatecontext"
       to: "."
@@ -33,8 +45,8 @@ spec:
       matchLabels:
         os: windows
         arch: amd64
-    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.4/updatecontext_windows_amd64.zip
-    sha256: "3e99817d1ec63528f4b44a02b92cbde44eee25f0932a96e8f6e45bc50786c1ed"
+    uri: https://github.com/borisputerka/updatecontext/releases/download/v0.1.5/updatecontext_windows_amd64.zip
+    sha256: "3b09e5597cb3d097e09d6931d45c43c70601dd788047ab2e151f220d64220cb9"
     files:
     - from: "updatecontext.exe"
       to: "."
